@@ -1,5 +1,5 @@
 $(function(){
-  console.log('document loaded');
+  // console.log('document loaded');
 
   getSongs();
 
@@ -21,23 +21,33 @@ function addSong(event) {
   // get the information out of the form
   var songData = $(this).serialize();
 
-  console.log(songData);
-
+  // console.log(songData);
   $.ajax({
     url: '/songs',
     type: 'POST',
     data: songData,
-    success: getSongs
+    success: getSongs,
+    error: displayError
   })
 }
 
+function displayError(response) {
+  console.log('error response: ', response);
+  $('#error').empty();
+  $('#error').append('Could not add song: ' + response.responseText);
+}
+
 function displaySongs(songs) {
-  console.log(songs);
+  // console.log(songs);
 
   $('#songs').empty();
 
   songs.forEach(function(song) {
+    var addedOn = 'unknown';
+    if (song.dateAdded) {
+      addedOn = new Date(song.dateAdded).toDateString();
+    }
     $('#songs').append('<li>' + song.title + ' by '
-      + song.artist + ' from album ' + song.album + '</li>');
+    + song.artist + ' from album ' + song.album + ', added on ' + addedOn + '</li>');
   });
 }
