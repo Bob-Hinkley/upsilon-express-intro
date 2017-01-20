@@ -1,5 +1,2 @@
 # upsilon-express-intro
-
-Learning about Express
-
-... tbd
+####Author: Bob Hinkley
